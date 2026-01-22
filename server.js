@@ -340,6 +340,15 @@ export const destinations = [
   }
 ];
 
+function getFilteredData(locType, locName) {
+  return destinations.filter(destination => destination[locType].toLowerCase() === locName.toLowerCase());
+}
+
+function sendResponse(res, status, data){
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(data));
+}
 
 const server = http.createServer((req, res) => {
     // res.end("Hello from server");
@@ -351,10 +360,22 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    if (req.url.startsWith('/api/continent/') && req.method === 'GET') {
+      const continent = req.url.split('/').pop();
+
+      if(!continent) {
+        sendResponse(res, 400, {error: "Continent not found"});
+        return;
+      }
+
+      const filteredData = getFilteredData('continent', continent);
+
+      sendResponse(res, 200, filteredData);
+      return;
+    }
+
     if (req.url === '/destinations' && req.method === 'GET') {
-        res.setHeader('Content-Type', 'application/json');
-        res.statusCode = 200;
-        res.end(JSON.stringify(destinations));
+        sendResponse(res, 200, destinations);
         return;
     }
 
