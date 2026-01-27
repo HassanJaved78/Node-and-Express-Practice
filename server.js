@@ -1,9 +1,9 @@
 import http from 'node:http';
-import path from 'node:path';
+// import path from 'node:path';
 // import fs from 'node:fs';
-import fs from 'node:fs/promises';  // this is used tpo get promises while reading file
+// import fs from 'node:fs/promises';  // this is used tpo get promises while reading file
 import serveStatic from './utils/serveStatic.js';
-import getData from './utils/getdata.js';
+import { handleGet, hanldePost } from './handlers/routeHandlers.js';
 
 // there are two ways to write response headers in node
   // 1- use res.setHeader and write individually all headert properties
@@ -20,8 +20,6 @@ import getData from './utils/getdata.js';
 
 const __dirname = import.meta.dirname;  // meta contains all info about modules, does not work with commonJS code
 // console.log(__dirname);
-
-console.log(getData());
 const server = http.createServer(async (req, res) => {
 
   // const absPath = path.join(__dirname, 'public', 'index.html');
@@ -31,8 +29,17 @@ const server = http.createServer(async (req, res) => {
   // console.log(process.cwd());
 
   // res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Methods': 'POST'});
-
-  await serveStatic(req, res, __dirname);
+  if (req.url === '/api') {
+    if (req.method ==='GET') {
+      return await handleGet(res);
+    }
+    else if (req.method === 'POST') {
+      return await hanldePost(req, res);
+    }
+  }
+  else if (!req.url.startsWith('/api')) {
+    await serveStatic(req, res, __dirname);
+  }
 
   // const pathToresource = path.join(__dirname, 'public', 'index.html');
 

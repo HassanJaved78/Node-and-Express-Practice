@@ -1,6 +1,6 @@
 
 export default function sendResponse(res, statusCode,contentType, payload){
     res.statusCode = statusCode;
-    res.contentType = contentType;
+    res.setHeader('Content-Type', contentType);
     res.end(payload);
 }

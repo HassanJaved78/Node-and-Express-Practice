@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import path, { parse } from 'node:path';
+import path from 'node:path';
 
 export default async function getData() {
     try{
