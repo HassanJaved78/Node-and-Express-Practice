@@ -3,7 +3,6 @@ import path from 'node:path';
 
 export default async function getData() {
     try{
-        const baseDir = import.meta.dirname;
         const filePath = path.join('data', 'data.json');
 
         const content = await fs.readFile(filePath);
