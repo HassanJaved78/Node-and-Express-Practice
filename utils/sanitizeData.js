@@ -5,7 +5,7 @@ export default function sanitizeData(data) {
 
     for (const {key, value} of Object.entries(data)) {
         if(typeof value === 'string') {
-            sanitizeData[key] = sanitizeHtml(
+            sanitizedData[key] = sanitizeHtml(
                 value, 
                 {
                     allowedTags: ['b'], allowedAttributes: []
@@ -13,9 +13,9 @@ export default function sanitizeData(data) {
             )
         }
         else {
-            sanitizeData[key] = value;
+            sanitizedData[key] = value;
         }
     }
-
-    return sanitizeData;
+    
+    return sanitizedData;
 }
