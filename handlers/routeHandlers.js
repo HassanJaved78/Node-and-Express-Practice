@@ -4,6 +4,7 @@ import parseJSONBody from '../utils/parseJSONBody.js';
 import addNewSighting from '../utils/addNewSighting.js';
 import sanitizeData from '../utils/sanitizeData.js';
 import { sightingEvents } from '../events/sightingEvents.js';
+import { stories } from "../data/stories.js";
 
 // GET handler
 export async function handleGet(res) {
@@ -32,4 +33,22 @@ export async function hanldePost(req, res) {
     catch (err) {
         sendResponse(res, 400, 'application/json', JSON.stringify({error: err}))
     }
+}
+
+export async function handleNews(req, res) {
+    res.setStatus = 200;
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive')
+
+    setInterval(() => {
+        let randomIndex = Math.floor(Math.random() * stories.length);
+
+        res.write(
+            `data: ${JSON.stringify({
+                event: 'news-update',
+                story: stories[randomIndex]
+            })}\n\n`  // here \n\n is very importatn as it tells that the current message has ended
+        )
+    }, 3000)
 }

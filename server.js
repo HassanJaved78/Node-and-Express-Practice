@@ -3,7 +3,7 @@ import http from 'node:http';
 // import fs from 'node:fs';
 // import fs from 'node:fs/promises';  // this is used tpo get promises while reading file
 import serveStatic from './utils/serveStatic.js';
-import { handleGet, hanldePost } from './handlers/routeHandlers.js';
+import { handleGet, hanldePost, handleNews } from './handlers/routeHandlers.js';
 
 // there are two ways to write response headers in node
   // 1- use res.setHeader and write individually all headert properties
@@ -36,6 +36,9 @@ const server = http.createServer(async (req, res) => {
     else if (req.method === 'POST') {
       return await hanldePost(req, res);
     }
+  }
+  else if (req.url === '/api/news') {
+    return await handleNews(req, res);
   }
   else if (!req.url.startsWith('/api')) {
     await serveStatic(req, res, __dirname);

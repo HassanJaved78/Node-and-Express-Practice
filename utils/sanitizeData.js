@@ -3,12 +3,12 @@ import sanitizeHtml from 'sanitize-html';
 export default function sanitizeData(data) {
     const sanitizedData = {};
 
-    for (const {key, value} of Object.entries(data)) {
+    for (const [key, value] of Object.entries(data)) {
         if(typeof value === 'string') {
             sanitizedData[key] = sanitizeHtml(
                 value, 
                 {
-                    allowedTags: ['b'], allowedAttributes: []
+                    allowedTags: ['b'], allowedAttributes: { }
                 }
             )
         }
